@@ -2,8 +2,10 @@ const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const chai = require('chai');
 const should = chai.should();
+const sinonChai = require('sinon-chai');
 const Reservation = require('../../../lib/schema/reservation');
 const db = require('sqlite');
+chai.use(sinonChai);
 
 describe('Reservations Library', function() {
   const debugStub =function() {
@@ -48,6 +50,7 @@ describe('Reservations Library', function() {
 
   context('Create', function() {
     let dbStub;
+    let validateSpy;
 
     before(function() {
       dbStub = sinon.stub(db, 'run').resolves({
@@ -80,6 +83,35 @@ describe('Reservations Library', function() {
           done();
         })
         .catch(error => done(error));
+    });
+
+    it('should call the validator with a transformed reservation one', function(done) {
+      const reservation = new Reservation({
+        date: '2017/06/10',
+        time: '06:02 AM',
+        party: 4,
+        name: 'Family',
+        email: 'username@example.com'
+      });
+
+      validateSpy = sinon.spy(reservations, 'validate');
+
+      reservations.create(reservation)
+        .then(() => {
+          validateSpy.should
+            .have.been.calledOnce
+            .and.been.calledWith({
+              datetime: '2017-06-10T06:02:00.000Z',
+              party: 4,
+              name: 'Family',
+              email: 'username@example.com',
+              message: undefined,
+              phone: undefined
+            });
+          validateSpy.restore();
+          done();
+        })
+        .catch(error => done(error))
     });
   });
 });
