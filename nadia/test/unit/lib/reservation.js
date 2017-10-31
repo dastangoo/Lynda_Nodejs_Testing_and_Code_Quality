@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const chai = require('chai');
 const should = chai.should();
 const Reservation = require('../../../lib/schema/reservation');
+const db = require('sqlite');
 
 describe('Reservations Library', function() {
   const debugStub =function() {
@@ -43,5 +44,42 @@ describe('Reservations Library', function() {
         .catch(error => error.should.be.an('error').and.not.be.null)
     });
 
+  });
+
+  context('Create', function() {
+    let dbStub;
+
+    before(function() {
+      dbStub = sinon.stub(db, 'run').resolves({
+        stmt: {
+          lastID: 1349
+        }
+      });
+      reservations = proxyquire('../../../lib/reservations', {
+        debug: debugStub,
+        sqlite: dbStub
+      });
+    });
+
+    after(function() {
+      dbStub.restore();
+    });
+
+    it('should return the created reservation ID', function(done) {
+      const reservation = new Reservation({
+        date: '2017/06/10',
+        time: '06:02 AM',
+        party: 4,
+        name: 'Family',
+        email: 'username@example.com'
+      });
+
+      reservations.create()
+        .then(lastID => {
+          lastID.should.deep.equal(1349);
+          done();
+        })
+        .catch(error => done(error));
+    });
   });
 });
