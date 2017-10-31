@@ -4,7 +4,7 @@
   "description": "Some description",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "cross-env DEBUG=nadia:* mocha",
     "start": "node app.js",
     "eslint": "eslint"
   },
