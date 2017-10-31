@@ -4,6 +4,7 @@
   "description": "Some description",
   "main": "index.js",
   "scripts": {
+    "coverage": "cross-env DEBUG=nadia:* nyc --reporter=text, --reporter=html mocha",
     "test": "cross-env DEBUG=nadia:* mocha",
     "start": "node app.js",
     "eslint": "eslint"
@@ -23,10 +24,12 @@
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "cookie-parser": "^1.4.3",
+    "cross-env": "^5.1.1",
     "eslint": "^4.10.0",
     "favicon": "0.0.2",
     "mocha": "^4.0.1",
     "morgan": "^1.9.0",
+    "nyc": "^11.2.1",
     "path": "^0.12.7",
     "proxyquire": "^1.8.0",
     "sinon": "^4.0.2",
