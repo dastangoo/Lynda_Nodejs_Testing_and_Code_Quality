@@ -4,7 +4,7 @@
   "description": "Some description",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node app.js",
     "eslint": "eslint"
   },
@@ -21,9 +21,11 @@
   "homepage": "https://github.com/dastangoo/Lynda_Nodejs_Testing_and_Code_Quality#readme",
   "devDependencies": {
     "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
     "cookie-parser": "^1.4.3",
     "eslint": "^4.10.0",
     "favicon": "0.0.2",
+    "mocha": "^4.0.1",
     "morgan": "^1.9.0",
     "path": "^0.12.7"
   },
